@@ -1,3 +1,6 @@
+const ADD_TO_CART_EVENT = 'cart/productAdded';
+const REMOVE_FROM_CART_EVENT = 'cart/productRemoved';
+
 class NewsletterForm extends React.Component {
   state = {
     email: '',
@@ -83,4 +86,57 @@ const newsletterContainer = document.querySelector(
 );
 
 // React recipe?
-ReactDOM.render(<NewsletterForm></NewsletterForm>, newsletterContainer);
+ReactDOM.createRoot(newsletterContainer).render(
+  <NewsletterForm></NewsletterForm>,
+);
+
+class AddToCartButton extends React.Component {
+  state = {
+    added: false,
+    busy: false,
+  };
+
+  onClick = () => {
+    this.setState({
+      busy: true,
+    });
+
+    setTimeout(() => {
+      const eventName = this.state.added
+        ? REMOVE_FROM_CART_EVENT
+        : ADD_TO_CART_EVENT;
+
+      dispatchEvent(
+        new CustomEvent(eventName, {
+          detail: {
+            productId: this.props.productId,
+          },
+        }),
+      );
+
+      this.setState({
+        added: !this.state.added,
+        busy: false,
+      });
+    }, 2000);
+  };
+
+  // all components require a render
+  render() {
+    // render must return jsx
+    return (
+      <button
+        className={`product-control ${this.state.added ? 'active' : ''}`}
+        onClick={this.onClick}
+        type="button"
+        title={this.state.added === true ? 'Remove from cart' : 'Add to cart'}
+        disabled={this.state.busy}
+      >
+        {this.state.added === true
+          ? `PID: ${thos.props.productId}`
+          : 'Add to Cart'}
+        {this.state.busy ? <i className="fas-fa spinner"></i> : ''}
+      </button>
+    );
+  }
+}

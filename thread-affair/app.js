@@ -86,7 +86,9 @@ class NewsletterForm extends React.Component {
 
 const newsletterContainer = document.querySelector('.home-newsletter');
 // React recipe?
-ReactDOM.render(<NewsletterForm></NewsletterForm>, newsletterContainer);
+ReactDOM.createRoot(newsletterContainer).render(
+  <NewsletterForm></NewsletterForm>,
+);
 
 class AddToCartButton extends React.Component {
   state = {
@@ -143,7 +145,7 @@ class AddToCartButton extends React.Component {
 }
 
 // function react component
-const AddToWishListButton = () => {
+const AddToWishlistButton = ({ productId }) => {
   const state = React.useState({
     added: false,
     busy: false,
@@ -156,6 +158,7 @@ const AddToWishListButton = () => {
       added: actualState.added,
       busy: true,
     });
+
     setTimeout(() => {
       // dispatch event
 
@@ -169,8 +172,8 @@ const AddToWishListButton = () => {
   return (
     <button
       className={`product-control ${actualState.added ? 'active' : ''}`}
-      type="button"
       title={actualState.added ? 'Remove from Wishlist' : 'Add to Wishlist'}
+      type="button"
       onClick={onClick}
     >
       {actualState.added === true
@@ -188,19 +191,18 @@ class ProductControls extends React.Component {
         key="cart"
         productId={this.props.productId}
       ></AddToCartButton>,
-      <AddToWishListButton
+      <AddToWishlistButton
         key="wl"
         productId={this.props.productId}
-      ></AddToWishListButton>,
+      ></AddToWishlistButton>,
     ];
   }
 }
 
 const productTileControls = document.querySelectorAll('.product-tile-controls');
 productTileControls.forEach((productTileControl, index) => {
-  ReactDOM.render(
+  ReactDOM.createRoot(productTileControl).render(
     <ProductControls productId={index}></ProductControls>,
-    productTileControl,
   );
 });
 

@@ -534,14 +534,15 @@ imaginea. Imi strica alinierea si nu am reusit sa o remediez, asa ca am apelat
   display: flex;
 }
 
-.product-tile-controls a {
+.product-tile-controls button {
   color: #2b2b2b;
   font-size: 25px;
   display: inline-block;
   margin-left: 16px;
+  border: none;
 }
 
-.product-tile-controls a i:hover {
+.product-tile-controls button i:hover {
   color: #740878;
 }
 
