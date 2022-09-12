@@ -140,3 +140,66 @@ class AddToCartButton extends React.Component {
     );
   }
 }
+
+// function react component
+const AddToWishListButton = ({ productId }) => {
+  const state = React.useState({
+    added: false,
+    busy: false,
+  });
+  const actualState = state[0];
+  const setState = state[1];
+
+  const onClick = () => {
+    setState({
+      added: actualState.added,
+      busy: true,
+    });
+
+    setTimeout(() => {
+      // dispatch event
+
+      setState({
+        added: !actualState.added,
+        busy: false,
+      });
+    }, 500);
+  };
+
+  return (
+    <button
+      className={`product-control ${actualState ? 'active' : ''}`}
+      title={actualState.added ? 'Remove from Wishlist' : 'Add to Wishlist'}
+      type="button"
+      onClick={onClick}
+    >
+      {actualState.added === true
+        ? (title = `PID ${productId} in wishlist`)
+        : 'Add to Wishlist'}{' '}
+      {actualState.busy ? <i className="fas-fa spinner"></i> : ''}
+    </button>
+  );
+};
+
+class ProductControls extends React.Component {
+  render() {
+    return [
+      <AddToCartButton
+        key="cart"
+        productId={this.props.productId}
+      ></AddToCartButton>,
+      <AddToWishlistButton
+        key="wl"
+        productId={this.props.productId}
+      ></AddToWishlistButton>,
+    ];
+  }
+}
+
+const productTileControls = document.querySelectorAll('product-tile-controls');
+productTileControls.forEach((productTileControl, index) => {
+  ReactDOM.render(
+    <ProductControls productId={index}></ProductControls>,
+    productTileControl,
+  );
+});
