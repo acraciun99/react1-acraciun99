@@ -199,7 +199,7 @@ class ProductControls extends React.Component {
 const productTileControls = document.querySelectorAll('product-tile-controls');
 productTileControls.forEach((productTileControl, index) => {
   ReactDOM.render(
-    <ProductControls productId={index}></ProductControls>,
+    <AddToCartButton productId={index}></AddToCartButton>,
     productTileControl,
   );
 });

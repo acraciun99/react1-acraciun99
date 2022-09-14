@@ -161,7 +161,7 @@ const AddToWishlistButton = ({ productId }) => {
 
     setTimeout(() => {
       // dispatch event
-      new CustomEvent(
+      const newEvent = new CustomEvent(
         actualState.added ? REMOVE_FROM_WISHLIST_EVENT : ADD_TO_WISHLIST_EVENT,
         {
           detail: {
@@ -169,6 +169,8 @@ const AddToWishlistButton = ({ productId }) => {
           },
         },
       );
+
+      dispatchEvent(newEvent);
 
       setState({
         added: !actualState.added,
@@ -230,6 +232,7 @@ class HeaderCounters extends React.Component {
 
   productCartAction = (event) => {
     const { productId } = event.detail;
+    alert(productId);
     // slice will clone the array
     // we don't mutate state
     const cartItems = this.state.cartItems.slice();
@@ -285,6 +288,14 @@ class HeaderCounters extends React.Component {
     addEventListener(REMOVE_FROM_WISHLIST_EVENT, this.productWishlistAction);
   }
 
+  componentWillUnmount() {
+    removeEventListener(ADD_TO_CART_EVENT, this.productCartAction);
+    removeEventListener(REMOVE_FROM_CART_EVENT, this.productCartAction);
+
+    removeEventListener(ADD_TO_WISHLIST_EVENT, this.productWishlistAction);
+    removeEventListener(REMOVE_FROM_WISHLIST_EVENT, this.productWishlistAction);
+  }
+
   // see some nasty stuff
 
   showProducts = (collectionName, displayName) => {
@@ -327,6 +338,30 @@ class HeaderCounters extends React.Component {
   }
 }
 
+// not necessary for monochrome
+class HCWrapper extends React.Component {
+  state = {
+    visible: true,
+  };
+
+  onClick = () => {
+    this.setState({
+      visible: !this.state.visible,
+    });
+  };
+
+  render() {
+    return (
+      <>
+        <button title="title" onClick={this.onClick}>
+          toggle
+        </button>
+        {this.state.visible ? <HeaderCounters></HeaderCounters> : ''}
+      </>
+    );
+  }
+}
+
 const headerCounters = document.querySelector('.header-counters');
 // mount react the good way
-ReactDOM.createRoot(headerCounters).render(<HeaderCounters></HeaderCounters>);
+ReactDOM.createRoot(headerCounters).render(<HCWrapper></HCWrapper>);
