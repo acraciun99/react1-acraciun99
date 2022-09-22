@@ -62,6 +62,40 @@ export const editContact = (contact) => {
   const contactProperties = Object.keys(existingContact);
 
   for (let i = 0; i < contactProperties.length; i++) {
-    existingContact[i] = contact[i];
+    const propertyName = contactProperties[i];
+
+    existingContact[propertyName] = contact[propertyName];
+  }
+};
+
+// add pet
+export const addPet = (contactId, pet) => {
+  const contact = getContact(contactId);
+  contact.pets = contact.pets || [];
+
+  contact.pets.push(pet);
+};
+
+// delete pet
+export const deletePet = (contactId, petId) => {
+  const contact = getContact(contactId);
+
+  if (!contact.pets) {
+    return;
+  }
+
+  let petIndex = -1;
+
+  for (let i = 0; i < contact.pets.length; i++) {
+    const pet = contact.pets[i];
+
+    if (petId === pet.id) {
+      petIndex = i;
+    }
+  }
+
+  if (petIndex >= 0) {
+    // splice mutates
+    contact.pets.splice(petIndex, 1);
   }
 };
